@@ -57,9 +57,9 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         # 2. Prediction logic
         keypoints = extract_keypoints(results)
         sequence.append(keypoints)
-        sequence = sequence[-30:]
+        sequence = sequence[-20:]
         
-        if len(sequence) == 30:
+        if len(sequence) == 20:
             res = model.predict(np.expand_dims(sequence, axis=0))[0]
             
             # Prediction text
