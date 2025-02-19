@@ -1,5 +1,6 @@
 # Indonesian Sign Language Detection
 ## Implementating Mediapipe and LSTM architecture to detect Indonesian Sign Language
+Created by: Glory Cornelia Patining Kurik
 
 ### Background
 Communication is one of the ways every living being uses to facilitate conveying what they feel; communication itself 
@@ -31,3 +32,7 @@ facilitating more effective communication.
 - Pyside5
 - PyQt5
 - Platform
+
+### Run Aplication
+Python needed to run this application, by typing it on a terminal:
+'''python main.py'''
