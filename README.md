@@ -36,6 +36,6 @@ facilitating more effective communication.
 ### Run Aplication
 Python needed to run this application, by typing it on a terminal:
 
-'''
+```
 python main.py
-'''
+```
