@@ -4,8 +4,10 @@ WINDOW_SIZE = 10  # Frames per window
 STRIDE = 5  # Sliding window step
 
 # Load the trained LSTM model
-model = load_model('my_model.h5')
-actions = np.array(['halo', 'apa kabar', 'aku', 'kamu', 'maaf', 'tolong', 'ya', 'tidak', 'suka', 'makanan'])
+model = load_model('Preprocessing/models/model_windowed_seq_1.h5')
+actions = np.array(['halo', 'apa kabar', 'aku', 'kamu', 'maaf', 'tolong', 'ya', 'tidak', 'suka', 'makanan', 
+                    'selamat pagi', 'selamat siang', 'selamat sore', 'selamat malam', 'sampai jumpa lagi', 
+                    'perkenalkan', 'terima kasih', 'sama-sama', 'mau', 'tidak mau'])
 
 # Mediapipe setup
 mp_holistic = mp.solutions.holistic
