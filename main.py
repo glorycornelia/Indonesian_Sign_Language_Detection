@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import time
+import pyrealsense2 as rs
+import threading
 from tensorflow.keras.models import load_model
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent, QThread, Signal)
