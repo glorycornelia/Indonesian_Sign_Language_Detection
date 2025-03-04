@@ -1,10 +1,7 @@
 from main import *
 
-WINDOW_SIZE = 10  # Frames per window
-STRIDE = 5  # Sliding window step
-
 # Load the trained LSTM model
-model = load_model('Preprocessing/models/model_normal_seq_5.h5')
+model = load_model('Preprocessing/models/model_windowed_seq_5.h5')
 actions = np.array(['halo', 'apa kabar', 'aku', 'kamu', 'maaf', 'tolong', 'ya', 'tidak', 'suka', 'makanan', 
                     'selamat pagi', 'selamat siang', 'selamat sore', 'selamat malam', 'sampai jumpa lagi', 
                     'perkenalkan', 'terima kasih', 'sama-sama', 'mau', 'tidak mau'])
@@ -46,21 +43,95 @@ def draw_styled_landmarks(image, results):
                              ) 
     
 
-class CameraThread(QThread):
+# class CameraThread(QThread):      # Normal Sequence
+#     frame_updated = Signal(np.ndarray)
+#     prediction_updated = Signal(str)
+#     indicator_updated = Signal(str)  # signal for indicator (red/green)
+
+#     def __init__(self):
+#         super().__init__()
+#         self.running = False
+#         self.sequence = []
+#         self.sentence = []
+#         self.threshold = 0.7
+#         self.skip_frame = 0 # skip 0 frame
+#         self.frame_counter = 0
+#         self.processing = False  # Indicator flag
+#         self.lock = threading.Lock()
+
+#         # Load RealSense camera
+#         self.pipeline = rs.pipeline()
+#         config = rs.config()
+#         config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+#         self.pipeline.start(config)
+
+#     def run(self):
+#         with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+#             self.running = True
+
+#             while self.running:
+#                 frames = self.pipeline.wait_for_frames()
+#                 color_frame = frames.get_color_frame()
+#                 if not color_frame:
+#                     continue
+
+#                 frame = np.asanyarray(color_frame.get_data())
+#                 self.frame_counter += 1
+
+#                 if not self.processing:  # Only capture frames if not predicting
+#                     if self.frame_counter % (self.skip_frame + 1) == 0:
+#                         image, results = mediapipe_detection(frame, holistic)
+#                         keypoints = extract_keypoints(results)
+
+#                         with self.lock:
+#                             self.sequence.append(keypoints)
+#                             self.sequence = self.sequence[-30:]
+
+#                         if len(self.sequence) == 30:
+#                             self.processing = True  # Start processing
+#                             self.indicator_updated.emit("red")  # Set indicator to red
+
+#                             prediction = model.predict(np.expand_dims(self.sequence, axis=0))[0]
+#                             predicted_action = actions[np.argmax(prediction)]
+
+#                             if prediction[np.argmax(prediction)] > self.threshold:
+#                                 if len(self.sentence) == 0 or predicted_action != self.sentence[-1]:
+#                                     self.sentence.append(predicted_action)
+#                                 self.sentence = self.sentence[-5:]
+
+#                             self.prediction_updated.emit(' '.join(self.sentence))
+
+#                             self.sequence = []  # Reset sequence after prediction
+#                             self.processing = False  # Resume frame capture
+#                             self.indicator_updated.emit("green")  # Set indicator to green
+
+
+#                 self.frame_updated.emit(frame)
+
+#     def stop(self):
+#         self.running = False
+#         self.pipeline.stop()
+#         self.quit()
+#         self.wait()
+
+class CameraThread(QThread):    # Windowed Sequence
     frame_updated = Signal(np.ndarray)
     prediction_updated = Signal(str)
-    indicator_updated = Signal(str)  # signal for indicator (red/green)
+    indicator_updated = Signal(str)  # Signal for indicator (red/green)
 
     def __init__(self):
         super().__init__()
         self.running = False
         self.sequence = []
         self.sentence = []
-        self.threshold = 0.7
-        self.skip_frame = 0 # skip 0 frame
-        self.frame_counter = 0
+        self.threshold = 0.75
+        self.frame_counter = 0  # Count total frames
         self.processing = False  # Indicator flag
         self.lock = threading.Lock()
+
+        self.window_size = 10  # Window size for input
+        self.stride = 5  # Stride for moving window
+        self.prediction_interval = 30  # Predict every 30 frames
 
         # Load RealSense camera
         self.pipeline = rs.pipeline()
@@ -79,35 +150,38 @@ class CameraThread(QThread):
                     continue
 
                 frame = np.asanyarray(color_frame.get_data())
-                self.frame_counter += 1
+                self.frame_counter += 1  # Count total frames
+                
+                # Capture keypoints every frame
+                image, results = mediapipe_detection(frame, holistic)
+                keypoints = extract_keypoints(results)
 
-                if not self.processing:  # Only capture frames if not predicting
-                    if self.frame_counter % (self.skip_frame + 1) == 0:
-                        image, results = mediapipe_detection(frame, holistic)
-                        keypoints = extract_keypoints(results)
+                with self.lock:
+                    self.sequence.append(keypoints)
+                    if len(self.sequence) > self.window_size:
+                        self.sequence.pop(0)  # Keep last `window_size` frames
 
-                        with self.lock:
-                            self.sequence.append(keypoints)
-                            self.sequence = self.sequence[-30:]
+                # Predict every 30 frames
+                if self.frame_counter % self.prediction_interval == 0 and len(self.sequence) == self.window_size:
+                    self.processing = True  # Start processing
+                    self.indicator_updated.emit("red")  # Set indicator to red
 
-                        if len(self.sequence) == 30:
-                            self.processing = True  # Start processing
-                            self.indicator_updated.emit("red")  # Set indicator to red
+                    prediction = model.predict(np.expand_dims(self.sequence, axis=0))[0]
+                    predicted_action = actions[np.argmax(prediction)]
 
-                            prediction = model.predict(np.expand_dims(self.sequence, axis=0))[0]
-                            predicted_action = actions[np.argmax(prediction)]
+                    if prediction[np.argmax(prediction)] > self.threshold:
+                        if len(self.sentence) == 0 or predicted_action != self.sentence[-1]:
+                            self.sentence.append(predicted_action)
+                        self.sentence = self.sentence[-5:]
 
-                            if prediction[np.argmax(prediction)] > self.threshold:
-                                if len(self.sentence) == 0 or predicted_action != self.sentence[-1]:
-                                    self.sentence.append(predicted_action)
-                                self.sentence = self.sentence[-5:]
+                    self.prediction_updated.emit(' '.join(self.sentence))
 
-                            self.prediction_updated.emit(' '.join(self.sentence))
+                    # Maintain stride: keep last `stride` frames
+                    with self.lock:
+                        self.sequence = self.sequence[-self.stride:]
 
-                            self.sequence = []  # Reset sequence after prediction
-                            self.processing = False  # Resume frame capture
-                            self.indicator_updated.emit("green")  # Set indicator to green
-
+                    self.processing = False  # Resume frame capture
+                    self.indicator_updated.emit("green")  # Set indicator to green
 
                 self.frame_updated.emit(frame)
 
