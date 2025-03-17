@@ -10,6 +10,9 @@ actions = np.array(['halo', 'apa kabar', 'aku', 'kamu', 'maaf', 'tolong', 'ya', 
 mp_holistic = mp.solutions.holistic
 mp_drawing = mp.solutions.drawing_utils
 
+WINDOW_SIZE = 10  # Frames per window
+STRIDE = 5  # Sliding window step
+
 # Helper functions
 def mediapipe_detection(image, model):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
