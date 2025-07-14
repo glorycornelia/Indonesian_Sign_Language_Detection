@@ -24,13 +24,13 @@ facilitating more effective communication.
 
 ### GUI
 Home Page  
-![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/blob/main/Home_Page.png?raw=true)
+![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/images/blob/main/Home_Page.png?raw=true)
 
 Real-time Detection Page  
-![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/blob/main/Real-time_Page.png?raw=true)
+![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/images/blob/main/Real-time_Page.png?raw=true)
 
 Video Detection Page  
-![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/blob/main/Video_Page.png?raw=true)
+![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/images/blob/main/Video_Page.png?raw=true)
 
 ### Library Requirement
 - Python
