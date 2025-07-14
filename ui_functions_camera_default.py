@@ -1,10 +1,7 @@
 from main import *
 
-WINDOW_SIZE = 10  # Frames per window
-STRIDE = 5  # Sliding window step
-
 # Load the trained LSTM model
-model = load_model('Preprocessing/models/model_normal_seq_3.h5')
+model = load_model('Preprocessing/models/model_windowed_seq_5.h5')
 actions = np.array(['halo', 'apa kabar', 'aku', 'kamu', 'maaf', 'tolong', 'ya', 'tidak', 'suka', 'makanan', 
                     'selamat pagi', 'selamat siang', 'selamat sore', 'selamat malam', 'sampai jumpa lagi', 
                     'perkenalkan', 'terima kasih', 'sama-sama', 'mau', 'tidak mau'])
@@ -12,6 +9,9 @@ actions = np.array(['halo', 'apa kabar', 'aku', 'kamu', 'maaf', 'tolong', 'ya', 
 # Mediapipe setup
 mp_holistic = mp.solutions.holistic
 mp_drawing = mp.solutions.drawing_utils
+
+WINDOW_SIZE = 10  # Frames per window
+STRIDE = 5  # Sliding window step
 
 # Helper functions
 def mediapipe_detection(image, model):
@@ -45,101 +45,74 @@ def draw_styled_landmarks(image, results):
                              mp_drawing.DrawingSpec(color=(245,66,230), thickness=1, circle_radius=1)
                              ) 
 
-class CameraThread(QThread):
+class CameraThread(QThread):    # Windowed Sequence
     frame_updated = Signal(np.ndarray)
     prediction_updated = Signal(str)
+    indicator_updated = Signal(str)  # Signal for indicator (red/green)
 
     def __init__(self):
         super().__init__()
         self.running = False
         self.sequence = []
         self.sentence = []
-        self.threshold = 0.7
-        self.cap = None
+        self.threshold = 0.75
+        self.frame_counter = 0
+        self.processing = False
+        self.lock = threading.Lock()
 
-    # def run(self):
-    #     self.cap = cv2.VideoCapture(0)
-    #     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-    #         while self.running:
-    #             ret, frame = self.cap.read()
-    #             if not ret:
-    #                 break
+        self.window_size = 10
+        self.stride = 5
+        self.prediction_interval = 30
 
-    #             image, results = mediapipe_detection(frame, holistic)
-    #             keypoints = extract_keypoints(results)
-
-    #             # Store last 30 frames
-    #             self.sequence.append(keypoints)
-    #             self.sequence = self.sequence[-30:]
-
-    #             if len(self.sequence) == 30: 
-    #                 X_windows = []
-    #                 for start in range(0, 30 - WINDOW_SIZE + 1, STRIDE):
-    #                     window = self.sequence[start:start + WINDOW_SIZE]  # Shape (10, 258)
-    #                     X_windows.append(window)
-
-    #                 if X_windows:  # If at least one window is formed
-    #                     X_windows = np.array(X_windows)  # Shape (num_windows, 10, 258)
-
-    #                     predictions = model.predict(X_windows)  # Shape (num_windows, num_classes)
-    #                     avg_prediction = np.mean(predictions, axis=0)  # Average across windows
-
-    #                     predicted_action = actions[np.argmax(avg_prediction)]
-
-    #                     # Confidence threshold check
-    #                     if avg_prediction[np.argmax(avg_prediction)] > self.threshold:
-    #                         if len(self.sentence) == 0 or predicted_action != self.sentence[-1]:
-    #                             self.sentence.append(predicted_action)
-
-    #                         # Keep only last 5 predictions
-    #                         if len(self.sentence) > 5:
-    #                             self.sentence = self.sentence[-5:]
-
-    #                     self.prediction_updated.emit(' '.join(self.sentence))
-
-    #             self.frame_updated.emit(image)
-
-    # def stop(self):
-    #     self.running = False
-    #     if self.cap:
-    #         self.cap.release()
-    #     self.quit()
-    #     self.wait()
+        # ✅ Open default webcam (device index 0)
+        self.cap = cv2.VideoCapture(0)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
     def run(self):
-        self.cap = cv2.VideoCapture(0)
         with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+            self.running = True
+
             while self.running:
                 ret, frame = self.cap.read()
                 if not ret:
-                    break
-                
+                    continue
+
+                self.frame_counter += 1
+
                 image, results = mediapipe_detection(frame, holistic)
                 keypoints = extract_keypoints(results)
-                self.sequence.append(keypoints)
-                self.sequence = self.sequence[-30:]
 
-                if len(self.sequence) == 30:
+                with self.lock:
+                    self.sequence.append(keypoints)
+                    if len(self.sequence) > self.window_size:
+                        self.sequence.pop(0)
+
+                if self.frame_counter % self.prediction_interval == 0 and len(self.sequence) == self.window_size:
+                    self.processing = True
+                    self.indicator_updated.emit("red")
+
                     prediction = model.predict(np.expand_dims(self.sequence, axis=0))[0]
                     predicted_action = actions[np.argmax(prediction)]
-                    
+
                     if prediction[np.argmax(prediction)] > self.threshold:
-                        if len(self.sentence) > 0:
-                            if predicted_action != self.sentence[-1]:
-                                self.sentence.append(predicted_action)
-                        else:
+                        if len(self.sentence) == 0 or predicted_action != self.sentence[-1]:
                             self.sentence.append(predicted_action)
-                    
-                        if len(self.sentence) > 5:
-                            self.sentence = self.sentence[-5:]
-                    
+                        self.sentence = self.sentence[-5:]
+
                     self.prediction_updated.emit(' '.join(self.sentence))
-                
-                self.frame_updated.emit(image)
+
+                    with self.lock:
+                        self.sequence = self.sequence[-self.stride:]
+
+                    self.processing = False
+                    self.indicator_updated.emit("green")
+
+                self.frame_updated.emit(frame)
 
     def stop(self):
         self.running = False
-        if self.cap:
+        if self.cap.isOpened():
             self.cap.release()
         self.quit()
         self.wait()
@@ -157,13 +130,13 @@ class UIFunctions(MainWindow):
         self.ui.btn_video_upload.clicked.connect(self.upload_video)
         self.ui.btn_detection.clicked.connect(self.process_and_predict_video)
 
-
     def start_camera(self):
         """ Start the camera only if page_2 is active. """
         if self.ui.stackedWidget.currentWidget() == self.ui.page_2:
             self.camera_thread = CameraThread()
             self.camera_thread.frame_updated.connect(self.update_camera_feed)
             self.camera_thread.prediction_updated.connect(self.update_prediction_label)
+            self.camera_thread.indicator_updated.connect(self.update_indicator)
             self.camera_thread.running = True
             self.camera_thread.start()
 
@@ -173,6 +146,7 @@ class UIFunctions(MainWindow):
             self.camera_thread.stop()
             self.camera_thread = None
             self.ui.camera_box.clear()
+            self.ui.indicator.setStyleSheet("background-color: #959d90;")
 
     def update_camera_feed(self, image):
         """ Update QLabel with camera feed. """
@@ -185,6 +159,12 @@ class UIFunctions(MainWindow):
     def update_prediction_label(self, text):
         """ Update QLabel with predictions. """
         self.ui.label_content_text_display.setText(text)
+
+    def update_indicator(self, color):
+        if color == "red":
+            self.ui.indicator.setStyleSheet("background-color: red;")
+        else:
+            self.ui.indicator.setStyleSheet("background-color: green;")
 
     def upload_video(self):
         """Opens a file dialog to select a video and stores frames in memory."""

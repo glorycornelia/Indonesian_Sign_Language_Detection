@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Btn_Toggle.sizePolicy().hasHeightForWidth())
         self.Btn_Toggle.setSizePolicy(sizePolicy)
-        self.Btn_Toggle.setStyleSheet(u"color: rgb(255, 255, 255);\n"
+        self.Btn_Toggle.setStyleSheet(u"color: rgb(0, 0, 0);\n"
 "border: 0px solid;")
 
         self.verticalLayout_2.addWidget(self.Btn_Toggle)
@@ -112,6 +112,7 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(255, 157, 218);\n"
+"       color: rgb(0, 0, 0); \n"
 "}")
 
         self.verticalLayout_4.addWidget(self.btn_page_1)
@@ -126,6 +127,7 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(255, 157, 218);\n"
+"       color: rgb(0, 0, 0); \n"
 "}")
 
         self.verticalLayout_4.addWidget(self.btn_page_2)
@@ -140,6 +142,7 @@ class Ui_MainWindow(object):
 "}\n"
 "QPushButton:hover {\n"
 "	background-color: rgb(255, 157, 218);\n"
+"       color: rgb(0, 0, 0); \n"
 "}")
 
         self.verticalLayout_4.addWidget(self.btn_page_3)
@@ -315,7 +318,7 @@ class Ui_MainWindow(object):
         font3.setWeight(QFont.Weight.Bold)
         self.btn_open_camera.setFont(font3)
         self.btn_open_camera.setStyleSheet(u"background-color: rgb(255, 157, 218);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(0, 0, 0);")
 
         self.horizontalLayout_8.addWidget(self.btn_open_camera)
 
@@ -403,7 +406,7 @@ class Ui_MainWindow(object):
         self.btn_detection.setMaximumSize(QSize(16777215, 40))
         self.btn_detection.setFont(font3)
         self.btn_detection.setStyleSheet(u"background-color: rgb(255, 157, 218);\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(0, 0, 0);")
 
         self.verticalLayout_12.addWidget(self.btn_detection)
 
