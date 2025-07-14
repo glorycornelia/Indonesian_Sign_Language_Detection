@@ -22,15 +22,15 @@ language recognition system based on Mediapipe and the Long Short-Term Memory (L
 The system is designed to recognize hand movements that represent various BISINDO, 
 facilitating more effective communication.
 
-### GUI
+### GUI  
 Home Page  
-![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/images/blob/main/Home_Page.png?raw=true)
+![Home Page](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/blob/main/images/Home_Page.png?raw=true)
 
 Real-time Detection Page  
-![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/images/blob/main/Real-time_Page.png?raw=true)
+![Real-time Page](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/blob/main/images/Real-time_Page.png?raw=true)
 
 Video Detection Page  
-![alt text](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/images/blob/main/Video_Page.png?raw=true)
+![Video Page](https://github.com/glorycornelia/Indonesian_Sign_Language_Detection/blob/main/images/Video_Page.png?raw=true)
 
 ### Library Requirement
 - Python
