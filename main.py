@@ -13,7 +13,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFo
 from PySide6.QtWidgets import *
 
 # GUI FILE
-from ui_main_light import Ui_MainWindow
+from ui_maint Ui_MainWindow
 
 # IMPORT FUNCTIONS
 from ui_functions_CNN import *

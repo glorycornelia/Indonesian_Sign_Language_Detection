@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(1200, 800)
         MainWindow.setMinimumSize(QSize(1200, 700))
         MainWindow.setMaximumSize(QSize(1200, 700))
-        MainWindow.setStyleSheet(u"background-color: rgb(45, 45, 45);")
+        MainWindow.setStyleSheet("background-color: #efefe9;")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
         self.Top_Bar = QFrame(self.centralwidget)
         self.Top_Bar.setObjectName(u"Top_Bar")
         self.Top_Bar.setMaximumSize(QSize(16777215, 40))
-        self.Top_Bar.setStyleSheet(u"background-color: rgb(35, 35, 35);")
+        self.Top_Bar.setStyleSheet("background-color: #959d90;")
         self.Top_Bar.setFrameShape(QFrame.NoFrame)
         self.Top_Bar.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.Top_Bar)
@@ -44,7 +44,7 @@ class Ui_MainWindow(object):
         self.frame_toggle.setObjectName(u"frame_toggle")
         self.frame_toggle.setMinimumSize(QSize(70, 40))
         self.frame_toggle.setMaximumSize(QSize(70, 40))
-        self.frame_toggle.setStyleSheet(u"background-color: rgb(255, 157, 218);")
+        self.frame_toggle.setStyleSheet("background-color: #959d90;")
         self.frame_toggle.setFrameShape(QFrame.StyledPanel)
         self.frame_toggle.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame_toggle)
@@ -58,8 +58,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Btn_Toggle.sizePolicy().hasHeightForWidth())
         self.Btn_Toggle.setSizePolicy(sizePolicy)
-        self.Btn_Toggle.setStyleSheet(u"color: rgb(0, 0, 0);\n"
-"border: 0px solid;")
+        self.Btn_Toggle.setStyleSheet("color: #000000; border: 0px;")
 
         self.verticalLayout_2.addWidget(self.Btn_Toggle)
 
@@ -88,7 +87,7 @@ class Ui_MainWindow(object):
         self.frame_left_menu.setObjectName(u"frame_left_menu")
         self.frame_left_menu.setMinimumSize(QSize(70, 0))
         self.frame_left_menu.setMaximumSize(QSize(70, 16777215))
-        self.frame_left_menu.setStyleSheet(u"background-color: rgb(35, 35, 35);")
+        self.frame_left_menu.setStyleSheet("background-color: #959d90")
         self.frame_left_menu.setFrameShape(QFrame.StyledPanel)
         self.frame_left_menu.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.frame_left_menu)
@@ -105,46 +104,34 @@ class Ui_MainWindow(object):
         self.btn_page_1 = QPushButton(self.frame_top_menus)
         self.btn_page_1.setObjectName(u"btn_page_1")
         self.btn_page_1.setMinimumSize(QSize(0, 40))
-        self.btn_page_1.setStyleSheet(u"QPushButton {\n"
-"	color: rgb(255, 255, 255);\n"
-"	background-color: rgb(35, 35, 35);\n"
-"	border: 0px solid;\n"
-"}\n"
-"QPushButton:hover {\n"
-"	background-color: rgb(255, 157, 218);\n"
-"       color: rgb(0, 0, 0); \n"
-"}")
 
         self.verticalLayout_4.addWidget(self.btn_page_1)
 
         self.btn_page_2 = QPushButton(self.frame_top_menus)
         self.btn_page_2.setObjectName(u"btn_page_2")
         self.btn_page_2.setMinimumSize(QSize(0, 40))
-        self.btn_page_2.setStyleSheet(u"QPushButton {\n"
-"	color: rgb(255, 255, 255);\n"
-"	background-color: rgb(35, 35, 35);\n"
-"	border: 0px solid;\n"
-"}\n"
-"QPushButton:hover {\n"
-"	background-color: rgb(255, 157, 218);\n"
-"       color: rgb(0, 0, 0); \n"
-"}")
 
         self.verticalLayout_4.addWidget(self.btn_page_2)
 
         self.btn_page_3 = QPushButton(self.frame_top_menus)
         self.btn_page_3.setObjectName(u"btn_page_3")
         self.btn_page_3.setMinimumSize(QSize(0, 40))
-        self.btn_page_3.setStyleSheet(u"QPushButton {\n"
-"	color: rgb(255, 255, 255);\n"
-"	background-color: rgb(35, 35, 35);\n"
-"	border: 0px solid;\n"
-"}\n"
-"QPushButton:hover {\n"
-"	background-color: rgb(255, 157, 218);\n"
-"       color: rgb(0, 0, 0); \n"
-"}")
-
+        
+        light_button_style = """
+QPushButton {
+    color: #333333;
+    background-color: #959d90;
+    border: 0px solid;
+}
+QPushButton:hover {
+    background-color: #523d35;
+    color: #FFFFFF;
+}
+"""
+        self.btn_page_1.setStyleSheet(light_button_style)
+        self.btn_page_2.setStyleSheet(light_button_style)
+        self.btn_page_3.setStyleSheet(light_button_style)
+        
         self.verticalLayout_4.addWidget(self.btn_page_3)
 
 
@@ -172,7 +159,7 @@ class Ui_MainWindow(object):
         font = QFont()
         font.setPointSize(20)
         self.tittle_page_1.setFont(font)
-        self.tittle_page_1.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.tittle_page_1.setStyleSheet("color: #333333;")
         self.tittle_page_1.setTextFormat(Qt.RichText)
         self.tittle_page_1.setScaledContents(False)
         self.tittle_page_1.setAlignment(Qt.AlignCenter)
@@ -189,7 +176,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setContentsMargins(100, 40, 100, 40)
         self.label_3 = QLabel(self.frame_content_page_1)
         self.label_3.setObjectName(u"label_3")
-        self.label_3.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label_3.setStyleSheet("color: #333333;")
         self.label_3.setTextFormat(Qt.RichText)
         self.label_3.setScaledContents(False)
         self.label_3.setAlignment(Qt.AlignCenter)
@@ -219,7 +206,7 @@ class Ui_MainWindow(object):
         self.tittle_page_2.setMinimumSize(QSize(0, 60))
         self.tittle_page_2.setMaximumSize(QSize(16777215, 60))
         self.tittle_page_2.setFont(font)
-        self.tittle_page_2.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.tittle_page_2.setStyleSheet("color: #333333;")
         self.tittle_page_2.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_6.addWidget(self.tittle_page_2)
@@ -252,7 +239,7 @@ class Ui_MainWindow(object):
         font1 = QFont()
         font1.setPointSize(12)
         self.camera_box.setFont(font1)
-        self.camera_box.setStyleSheet(u"background-color: rgb(91, 91, 91);")
+        self.camera_box.setStyleSheet("background-color: #ffffff; border: 1px solid #cccccc;")
         self.camera_box.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_4.addWidget(self.camera_box)
@@ -278,7 +265,7 @@ class Ui_MainWindow(object):
         font2.setBold(True)
         font2.setWeight(QFont.Weight.Bold)
         self.label_text_display.setFont(font2)
-        self.label_text_display.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label_text_display.setStyleSheet("color: #333333;")
 
         self.horizontalLayout_5.addWidget(self.label_text_display)
 
@@ -286,13 +273,13 @@ class Ui_MainWindow(object):
         self.indicator.setObjectName(u"indicator")
         self.indicator.setMinimumSize(QSize(15, 15))
         self.indicator.setMaximumSize(QSize(15, 15))
-        self.indicator.setStyleSheet(u"background-color: rgb(255, 157, 218);")
+        self.indicator.setStyleSheet("background-color: #959d90")
 
         self.horizontalLayout_5.addWidget(self.indicator)
 
         self.label_content_text_display = QLabel(self.frame_text_display)
         self.label_content_text_display.setObjectName(u"label_content_text_display")
-        self.label_content_text_display.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label_content_text_display.setStyleSheet("color: #333333;")
 
         self.horizontalLayout_5.addWidget(self.label_content_text_display)
 
@@ -317,8 +304,7 @@ class Ui_MainWindow(object):
         font3.setBold(True)
         font3.setWeight(QFont.Weight.Bold)
         self.btn_open_camera.setFont(font3)
-        self.btn_open_camera.setStyleSheet(u"background-color: rgb(255, 157, 218);\n"
-"color: rgb(0, 0, 0);")
+        self.btn_open_camera.setStyleSheet("background-color: #523d35; color: #ffffff;")
 
         self.horizontalLayout_8.addWidget(self.btn_open_camera)
 
@@ -327,8 +313,7 @@ class Ui_MainWindow(object):
         self.btn_close_camera.setMinimumSize(QSize(0, 35))
         self.btn_close_camera.setMaximumSize(QSize(16777215, 35))
         self.btn_close_camera.setFont(font3)
-        self.btn_close_camera.setStyleSheet(u"background-color: rgb(143, 143, 143);\n"
-"color: rgb(255, 255, 255);")
+        self.btn_close_camera.setStyleSheet("background-color: #cccccc; color: #333333;")
 
         self.horizontalLayout_8.addWidget(self.btn_close_camera)
 
@@ -348,7 +333,7 @@ class Ui_MainWindow(object):
         self.tittle_page_3.setMinimumSize(QSize(0, 60))
         self.tittle_page_3.setMaximumSize(QSize(16777215, 60))
         self.tittle_page_3.setFont(font)
-        self.tittle_page_3.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.tittle_page_3.setStyleSheet("color: #333333;")
         self.tittle_page_3.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_8.addWidget(self.tittle_page_3)
@@ -372,8 +357,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.setContentsMargins(100, -1, 100, -1)
         self.label_video_text = QLabel(self.frame_video_upload)
         self.label_video_text.setObjectName(u"label_video_text")
-        self.label_video_text.setStyleSheet(u"background-color: rgb(91, 91, 91);\n"
-"color: rgb(255, 255, 255);")
+        self.label_video_text.setStyleSheet("background-color: #ffffff; color: #333333; border: 1px solid #cccccc;")
         self.label_video_text.setMargin(10)
 
         self.horizontalLayout_7.addWidget(self.label_video_text)
@@ -382,9 +366,7 @@ class Ui_MainWindow(object):
         self.btn_video_upload.setObjectName(u"btn_video_upload")
         self.btn_video_upload.setMinimumSize(QSize(200, 40))
         self.btn_video_upload.setMaximumSize(QSize(200, 40))
-        self.btn_video_upload.setStyleSheet(u"background-color: rgb(143, 143, 143);\n"
-"color: rgb(255, 255, 255);")
-
+        self.btn_video_upload.setStyleSheet("background-color: #cccccc; color: #333333;")
         self.horizontalLayout_7.addWidget(self.btn_video_upload)
 
 
@@ -405,8 +387,7 @@ class Ui_MainWindow(object):
         self.btn_detection.setMinimumSize(QSize(0, 40))
         self.btn_detection.setMaximumSize(QSize(16777215, 40))
         self.btn_detection.setFont(font3)
-        self.btn_detection.setStyleSheet(u"background-color: rgb(255, 157, 218);\n"
-"color: rgb(0, 0, 0);")
+        self.btn_detection.setStyleSheet("background-color: #959d90; color: #ffffff;")
 
         self.verticalLayout_12.addWidget(self.btn_detection)
 
@@ -427,13 +408,13 @@ class Ui_MainWindow(object):
         self.label_text_display_2.setObjectName(u"label_text_display_2")
         self.label_text_display_2.setMaximumSize(QSize(200, 16777215))
         self.label_text_display_2.setFont(font2)
-        self.label_text_display_2.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label_text_display_2.setStyleSheet("color: #333333;")
 
         self.horizontalLayout_6.addWidget(self.label_text_display_2)
 
         self.label_content_text_display_2 = QLabel(self.frame_text_display_2)
         self.label_content_text_display_2.setObjectName(u"label_content_text_display_2")
-        self.label_content_text_display_2.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label_content_text_display_2.setStyleSheet("color: #333333;")
 
         self.horizontalLayout_6.addWidget(self.label_content_text_display_2)
 
@@ -469,7 +450,7 @@ class Ui_MainWindow(object):
         self.btn_page_1.setText(QCoreApplication.translate("MainWindow", u"Home", None))
         self.btn_page_2.setText(QCoreApplication.translate("MainWindow", u"Real Time", None))
         self.btn_page_3.setText(QCoreApplication.translate("MainWindow", u"Video", None))
-        self.tittle_page_1.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600; color:#ff9dda;\">Sign Language</span><span style=\" font-weight:600;\"> Detection</span></p></body></html>", None))
+        self.tittle_page_1.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600; color:#959d90;\">Sign Language</span><span style=\" font-weight:600;\"> Detection</span></p></body></html>", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -478,16 +459,16 @@ class Ui_MainWindow(object):
 "<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">Using a Long Short-Term Memory (LSTM) model,"
                         " the app processes these landmark sequences to classify and predict sign language gestures effectively. The combination of spatiotemporal data analysis and deep learning ensures high accuracy and adaptability in recognizing diverse BISINDO signs.</span></p>\n"
 "<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
-"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#ff9dda;\">Created By: Glory Cornelia Patining Kurik</span></p></body></html>", None))
+"<p align=\"justify\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#523d35;\">Created By: Glory Cornelia Patining Kurik</span></p></body></html>", None))
         self.image_box.setText("")
-        self.tittle_page_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600; color:#ff9dda;\">Real Time</span><span style=\" font-weight:600;\"> Detection</span></p></body></html>", None))
+        self.tittle_page_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600; color:#959d90;\">Real Time</span><span style=\" font-weight:600;\"> Detection</span></p></body></html>", None))
         self.camera_box.setText("")
         self.label_text_display.setText(QCoreApplication.translate("MainWindow", u"Translation Text :", None))
         self.indicator.setText("")
         self.label_content_text_display.setText("")
         self.btn_open_camera.setText(QCoreApplication.translate("MainWindow", u"Open Camera", None))
         self.btn_close_camera.setText(QCoreApplication.translate("MainWindow", u"Close Camera", None))
-        self.tittle_page_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600; color:#ff9dda;\">Video</span><span style=\" font-weight:600;\"> Detection</span></p></body></html>", None))
+        self.tittle_page_3.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" font-weight:600; color:#959d90;\">Video</span><span style=\" font-weight:600;\"> Detection</span></p></body></html>", None))
         self.label_video_text.setText(QCoreApplication.translate("MainWindow", u"Video Tittle", None))
         self.btn_video_upload.setText(QCoreApplication.translate("MainWindow", u"Upload Video", None))
         self.btn_detection.setText(QCoreApplication.translate("MainWindow", u"Translate Now", None))
